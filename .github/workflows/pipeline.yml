@@ -12,6 +12,10 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      myTestArgs:
+        description: 'Testing values'
 
 jobs:
   build:
@@ -72,7 +76,18 @@ jobs:
          ./test-script.sh 0.0.${{ github.run_number }} 
          ${{ github.event.inputs.myTestArgs || '1 2 3' }}
 
+  create-issue-on-failure:
 
+    needs: test-run
+
+    permissions:
+      issues: write
+
+    if: always() && failure() 
+    uses: ./.github/workflows/create-failure-issue.yml 
+    with:
+      title: "Automated workflow failure issue for commit ${{ github.sha }}"
+      body: "This issue was automatically created by the workflow ${{ github.workflow }}"  
 
 
 
