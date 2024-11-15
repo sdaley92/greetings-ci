@@ -15,7 +15,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -37,9 +36,9 @@ jobs:
       run: ./gradlew build
 
     - name: Version Artifact
-     run: >
-      mv build/libs/greetings-ci.jar
-      build/libs/greetings-ci-0.0.${{ github.run_number }}.jar
+      run: >
+        mv build/libs/greetings-ci.jar
+        build/libs/greetings-ci-0.0.${{ github.run_number }}.jar
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4.3.0
